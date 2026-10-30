@@ -53,11 +53,13 @@ export const ReviewWorkbenchView: React.FC<ReviewWorkbenchViewProps> = ({
   // Matrix items cached by doc id
   const [matrixState, setMatrixState] = useState<Record<string, ReviewMatrixItem[]>>({});
 
+  const reviewableDocs = documents.filter((doc) => doc.category !== 'DOKUMENTASI_FOTO');
+
   const [activeDocId, setActiveDocId] = useState<string>(
-    initialDocId || (documents[0]?.id || '')
+    initialDocId || (reviewableDocs[0]?.id || '')
   );
 
-  const activeDoc = documents.find((d) => d.id === activeDocId) || documents[0];
+  const activeDoc = reviewableDocs.find((d) => d.id === activeDocId) || reviewableDocs[0];
   const activePackage = activeDoc ? packages.find((p) => p.id === activeDoc.packageId) : undefined;
 
   const getDocMatrixItems = (docId: string): ReviewMatrixItem[] => {
@@ -71,7 +73,7 @@ export const ReviewWorkbenchView: React.FC<ReviewWorkbenchViewProps> = ({
     return DEFAULT_REVIEW_MATRIX_ITEMS;
   };
 
-  const filteredDocs = documents.filter((doc) => {
+  const filteredDocs = reviewableDocs.filter((doc) => {
     if (statusFilter === 'ALL') return true;
     return doc.reviewStatus === statusFilter;
   });
@@ -170,7 +172,7 @@ export const ReviewWorkbenchView: React.FC<ReviewWorkbenchViewProps> = ({
                 statusFilter === 'ALL' ? 'bg-white font-semibold text-stone-900 shadow-2xs' : 'text-stone-600'
               }`}
             >
-              Semua ({documents.length})
+              Semua ({reviewableDocs.length})
             </button>
             <button
               onClick={() => setStatusFilter('MENUNGGU_REVIEW')}
@@ -180,7 +182,7 @@ export const ReviewWorkbenchView: React.FC<ReviewWorkbenchViewProps> = ({
                   : 'text-stone-600'
               }`}
             >
-              Perlu Review ({documents.filter((d) => d.reviewStatus === 'MENUNGGU_REVIEW').length})
+              Perlu Review ({reviewableDocs.filter((d) => d.reviewStatus === 'MENUNGGU_REVIEW').length})
             </button>
             <button
               onClick={() => setStatusFilter('DISETUJUI')}
@@ -190,7 +192,7 @@ export const ReviewWorkbenchView: React.FC<ReviewWorkbenchViewProps> = ({
                   : 'text-stone-600'
               }`}
             >
-              Disetujui ({documents.filter((d) => d.reviewStatus === 'DISETUJUI').length})
+              Disetujui ({reviewableDocs.filter((d) => d.reviewStatus === 'DISETUJUI').length})
             </button>
           </div>
         </div>

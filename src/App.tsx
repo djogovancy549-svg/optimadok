@@ -309,7 +309,9 @@ export default function App() {
     }
   };
 
-  const pendingReviewCount = documents.filter((d) => d.reviewStatus === 'MENUNGGU_REVIEW').length;
+  const pendingReviewCount = documents.filter(
+    (d) => d.category !== 'DOKUMENTASI_FOTO' && d.reviewStatus === 'MENUNGGU_REVIEW'
+  ).length;
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (

@@ -104,3 +104,61 @@ export function getStageTitle(stageKey: StageKey): string {
       return '6. SPK & Selesai';
   }
 }
+
+/**
+ * Converts Google Drive file view URLs or photo objects into direct browser-displayable image URLs
+ */
+export function getPhotoDisplayUrl(photoItem?: any): string {
+  if (!photoItem) return 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80';
+
+  let rawUrl = '';
+  let driveId = '';
+
+  if (typeof photoItem === 'string') {
+    rawUrl = photoItem;
+  } else {
+    driveId = photoItem.driveFileId || '';
+    if (photoItem.thumbnailUrl) {
+      rawUrl = photoItem.thumbnailUrl;
+    } else if (photoItem.images && photoItem.images.length > 0) {
+      for (const img of photoItem.images) {
+        if (img && typeof img === 'string') {
+          if (img.startsWith('data:') || img.startsWith('blob:')) return img;
+          if (img.includes('drive.google.com') || img.includes('googleusercontent.com') || img.startsWith('http')) {
+            rawUrl = img;
+            break;
+          }
+        }
+      }
+    }
+    if (!rawUrl) {
+      rawUrl = photoItem.fileUrl || photoItem.url || '';
+    }
+  }
+
+  if (rawUrl.startsWith('data:') || rawUrl.startsWith('blob:')) {
+    return rawUrl;
+  }
+
+  // Extract Drive File ID from URL if driveId is not set
+  if (!driveId && rawUrl) {
+    const matchD = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const matchId = rawUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (matchD && matchD[1]) {
+      driveId = matchD[1];
+    } else if (matchId && matchId[1]) {
+      driveId = matchId[1];
+    }
+  }
+
+  if (driveId) {
+    // Return thumbnail URL which works reliably inside <img> tags for Google Drive images
+    return `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`;
+  }
+
+  if (rawUrl && rawUrl.startsWith('http')) {
+    return rawUrl;
+  }
+
+  return 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80';
+}

@@ -17,7 +17,7 @@ import {
   DocumentItem,
   DocumentCategory,
 } from '../types/procurement';
-import { formatDate, formatRupiah, getReviewStatusBadge } from '../utils/formatters';
+import { formatDate, formatRupiah, getReviewStatusBadge, getPhotoDisplayUrl } from '../utils/formatters';
 import { NagekeoBannerSlider } from './NagekeoBannerSlider';
 import { MarqueeTicker } from './MarqueeTicker';
 import { SecurityPinModal } from './SecurityPinModal';
@@ -166,14 +166,14 @@ export const UploadDocumentView: React.FC<UploadDocumentViewProps> = ({
           fileSize: formatDriveBytes(f.size),
           uploadDate: f.date || new Date().toISOString().slice(0, 10),
           uploadedBy: 'Google Drive Apps Script',
-          reviewStatus: 'MENUNGGU_REVIEW',
+          reviewStatus: f.folder === 'foto' ? 'DISETUJUI' : 'MENUNGGU_REVIEW',
           notes: `File terbaca dari Folder Drive: ${f.folder.toUpperCase()}`,
           fileType: isImg ? 'jpg' : isDoc ? 'doc' : isXls ? 'xls' : isZip ? 'zip' : 'pdf',
           fileUrl: f.url,
           driveFileId: f.id,
           downloadUrl: f.downloadUrl,
           thumbnailUrl: f.thumbnail,
-          images: isImg ? [f.thumbnail, f.url] : undefined,
+          images: isImg ? [f.thumbnail, `https://drive.google.com/thumbnail?id=${f.id}&sz=w1000`, f.url] : undefined,
         };
       });
 
@@ -346,7 +346,7 @@ export const UploadDocumentView: React.FC<UploadDocumentViewProps> = ({
       fileSize: `${totalMB} MB (${photoFiles.length} Foto)`,
       uploadDate: photoDate || new Date().toISOString().slice(0, 10),
       uploadedBy: uploaderRole,
-      reviewStatus: 'MENUNGGU_REVIEW',
+      reviewStatus: 'DISETUJUI',
       notes: photoNotes.trim() || `Dokumentasi visual kegiatan lapangan di ${photoLocation || 'Lokasi Pekerjaan'}.`,
       fileType: 'jpg',
       images: photoFiles.map((p) => p.preview),
@@ -822,7 +822,7 @@ export const UploadDocumentView: React.FC<UploadDocumentViewProps> = ({
                               className="aspect-square rounded-xl overflow-hidden border border-stone-200/90 cursor-zoom-in group/img relative bg-stone-200"
                             >
                               <img
-                                src={imgUrl}
+                                src={getPhotoDisplayUrl(imgUrl)}
                                 alt={`Foto ${idx + 1}`}
                                 className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-300"
                               />

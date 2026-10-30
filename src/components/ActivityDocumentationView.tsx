@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   X
 } from 'lucide-react';
+import { getPhotoDisplayUrl } from '../utils/formatters';
 
 interface ActivityDocumentationViewProps {
   procurementPackage: ProcurementPackage;
@@ -39,7 +40,7 @@ export const ActivityDocumentationView: React.FC<ActivityDocumentationViewProps>
   const [selectedPhotoIds, setSelectedSelectedPhotoIds] = useState<string[]>([]);
 
   useEffect(() => {
-    // Select first two photos by default if any
+    // Select first four photos by default if any
     if (photos.length > 0 && selectedPhotoIds.length === 0) {
       setSelectedSelectedPhotoIds(photos.slice(0, 4).map(p => p.id));
     }
@@ -136,7 +137,19 @@ export const ActivityDocumentationView: React.FC<ActivityDocumentationViewProps>
                           selectedPhotoIds.includes(photo.id) ? 'border-emerald-500 shadow-md ring-2 ring-emerald-100' : 'border-transparent opacity-60 hover:opacity-100'
                         }`}
                       >
-                        <img src={photo.fileUrl || '/placeholder-img.png'} alt={photo.title} className="w-full h-full object-cover" />
+                        <img
+                          src={getPhotoDisplayUrl(photo)}
+                          alt={photo.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.currentTarget;
+                            if (photo.driveFileId && !target.src.includes('lh3.googleusercontent')) {
+                              target.src = `https://lh3.googleusercontent.com/d/${photo.driveFileId}`;
+                            } else {
+                              target.src = 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80';
+                            }
+                          }}
+                        />
                         {selectedPhotoIds.includes(photo.id) && (
                           <div className="absolute top-2 right-2 bg-emerald-500 text-white rounded-full p-0.5 shadow-sm">
                             <CheckCircle2 className="w-4 h-4" />
@@ -206,7 +219,19 @@ export const ActivityDocumentationView: React.FC<ActivityDocumentationViewProps>
                      {selectedPhotos.map(photo => (
                        <div key={photo.id} className="border-[3px] border-stone-900 p-1 shadow-sm">
                          <div className="aspect-[4/3] relative overflow-hidden bg-stone-100">
-                           <img src={photo.fileUrl || '/placeholder-img.png'} alt={photo.title} className="w-full h-full object-cover" />
+                           <img
+                             src={getPhotoDisplayUrl(photo)}
+                             alt={photo.title}
+                             className="w-full h-full object-cover"
+                             onError={(e) => {
+                               const target = e.currentTarget;
+                               if (photo.driveFileId && !target.src.includes('lh3.googleusercontent')) {
+                                 target.src = `https://lh3.googleusercontent.com/d/${photo.driveFileId}`;
+                               } else {
+                                 target.src = 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80';
+                               }
+                             }}
+                           />
                          </div>
                          <div className="mt-1 text-center font-mono text-[9px] uppercase font-bold text-stone-600 border-t border-stone-200 pt-1">
                            {photo.title}

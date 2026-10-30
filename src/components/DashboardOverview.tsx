@@ -81,10 +81,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   );
 
   // Document Review Metrics for KPIs
-  const pendingDocuments = documents.filter((d) => d.reviewStatus === 'MENUNGGU_REVIEW');
-  const approvedDocuments = documents.filter((d) => d.reviewStatus === 'DISETUJUI');
-  const revisionDocuments = documents.filter((d) => d.reviewStatus === 'PERLU_PERBAIKAN');
-  const reviewedDocuments = documents.filter(
+  const reviewableDocuments = documents.filter((d) => d.category !== 'DOKUMENTASI_FOTO');
+  const pendingDocuments = reviewableDocuments.filter((d) => d.reviewStatus === 'MENUNGGU_REVIEW');
+  const approvedDocuments = reviewableDocuments.filter((d) => d.reviewStatus === 'DISETUJUI');
+  const revisionDocuments = reviewableDocuments.filter((d) => d.reviewStatus === 'PERLU_PERBAIKAN');
+  const reviewedDocuments = reviewableDocuments.filter(
     (d) => d.reviewStatus === 'DISETUJUI' || d.reviewStatus === 'PERLU_PERBAIKAN'
   );
 
