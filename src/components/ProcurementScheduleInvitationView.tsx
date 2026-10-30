@@ -6,6 +6,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ProcurementPackage, DocumentChecklistItem } from '../types/procurement';
 import { formatRupiah, formatDate } from '../utils/formatters';
+import { validateDailyPin, getTodayPin } from '../utils/securityPin';
 import { sendWebhookPayload } from '../utils/webhookService';
 import {
   Calendar,
@@ -225,43 +226,9 @@ export const ProcurementScheduleInvitationView: React.FC<ProcurementScheduleInvi
   const [enteredPin, setEnteredPin] = useState('');
   const [pinError, setPinError] = useState('');
 
-  // Helper to validate dynamic daily PIN format: DDMMYY-lgttd
+  // Helper to validate dynamic daily PIN format: DDMMYY-lgttd or DDMMYY-pbj
   const validateLgttdPin = (inputPin: string): boolean => {
-    const normalized = inputPin.trim().toLowerCase();
-    const now = new Date();
-
-    // 1. Timezone Asia/Makassar (Nagekeo, NTT / WITA)
-    try {
-      const formatter = new Intl.DateTimeFormat('id-ID', {
-        timeZone: 'Asia/Makassar',
-        day: '2-digit',
-        month: '2-digit',
-        year: '2-digit',
-      });
-      const parts = formatter.formatToParts(now);
-      const day = parts.find((p) => p.type === 'day')?.value || String(now.getDate()).padStart(2, '0');
-      const month = parts.find((p) => p.type === 'month')?.value || String(now.getMonth() + 1).padStart(2, '0');
-      const year = parts.find((p) => p.type === 'year')?.value || String(now.getFullYear()).slice(-2);
-      const pinWita = `${day}${month}${year}-lgttd`.toLowerCase();
-      if (normalized === pinWita) return true;
-    } catch {}
-
-    // 2. Local system date fallback
-    const ddLocal = String(now.getDate()).padStart(2, '0');
-    const mmLocal = String(now.getMonth() + 1).padStart(2, '0');
-    const yyLocal = String(now.getFullYear()).slice(-2);
-    if (normalized === `${ddLocal}${mmLocal}${yyLocal}-lgttd`.toLowerCase()) return true;
-
-    // 3. UTC fallback
-    const ddUtc = String(now.getUTCDate()).padStart(2, '0');
-    const mmUtc = String(now.getUTCMonth() + 1).padStart(2, '0');
-    const yyUtc = String(now.getUTCFullYear()).slice(-2);
-    if (normalized === `${ddUtc}${mmUtc}${yyUtc}-lgttd`.toLowerCase()) return true;
-
-    // 4. Exact current prompt date reference fallback
-    if (normalized === '301026-lgttd') return true;
-
-    return false;
+    return validateDailyPin(inputPin, 'lgttd') || validateDailyPin(inputPin, 'pbj');
   };
 
   // Handle Signature File Upload (PDF scan / PNG / JPG)

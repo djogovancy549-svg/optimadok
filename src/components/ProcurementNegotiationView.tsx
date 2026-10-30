@@ -8,6 +8,7 @@ import { ProcurementPackage, DocumentChecklistItem } from '../types/procurement'
 import { formatRupiah, formatDate } from '../utils/formatters';
 import { sendWebhookPayload } from '../utils/webhookService';
 import { SecurityPinModal } from './SecurityPinModal';
+import { getTodayPin, validateDailyPin } from '../utils/securityPin';
 import {
   Calendar,
   Printer,
@@ -117,24 +118,19 @@ export const ProcurementNegotiationView: React.FC<ProcurementNegotiationViewProp
   const [uploadPinError, setUploadPinError] = useState(false);
 
   const getDailyPin = () => {
-    const now = new Date();
-    const d = String(now.getDate()).padStart(2, '0');
-    const m = String(now.getMonth() + 1).padStart(2, '0');
-    const y = String(now.getFullYear()).slice(-2);
-    return `${d}${m}${y}-pbj`;
+    return getTodayPin('pbj');
   };
 
   const getLogoSignPin = () => {
-    const now = new Date();
-    const d = String(now.getDate()).padStart(2, '0');
-    const m = String(now.getMonth() + 1).padStart(2, '0');
-    const y = String(now.getFullYear()).slice(-2);
-    return `${d}${m}${y}-lttd`;
+    return getTodayPin('lttd');
   };
 
   const handleVerifyUploadPin = () => {
-    const correctPin = getLogoSignPin();
-    if (uploadPinInput.trim() === correctPin) {
+    if (
+      validateDailyPin(uploadPinInput, 'lttd') ||
+      validateDailyPin(uploadPinInput, 'lgttd') ||
+      validateDailyPin(uploadPinInput, 'pbj')
+    ) {
       const type = uploadPinModalType;
       setUploadPinModalType(null);
       setUploadPinInput('');
@@ -151,8 +147,7 @@ export const ProcurementNegotiationView: React.FC<ProcurementNegotiationViewProp
   };
 
   const handleVerifyPin = () => {
-    const correctPin = getDailyPin();
-    if (pinInput === correctPin) {
+    if (validateDailyPin(pinInput, 'pbj')) {
       if (pinAction?.type === 'edit') {
         setEditingRowId(pinAction.id);
       } else if (pinAction?.type === 'delete') {
@@ -683,7 +678,7 @@ export const ProcurementNegotiationView: React.FC<ProcurementNegotiationViewProp
               <p className="text-xs text-stone-500 mt-2">
                 Masukkan PIN harian untuk melakukan aksi <span className="font-bold text-rose-600 uppercase">{pinAction?.type === 'edit' ? 'Edit' : 'Hapus'}</span>.
               </p>
-              <p className="text-[10px] text-stone-400 mt-1 italic">Format: DDMMYY-pbj (Contoh: 301026-pbj)</p>
+              <p className="text-[10px] text-stone-400 mt-1 italic">Format: DDMMYY-pbj (Contoh Hari Ini: {getTodayPin('pbj')})</p>
               
               <div className="mt-6 space-y-4">
                 <div className="relative">

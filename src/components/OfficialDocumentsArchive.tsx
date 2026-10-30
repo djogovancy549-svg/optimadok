@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { ProcurementPackage } from '../types/procurement';
 import { formatRupiah, formatDate } from '../utils/formatters';
+import { validateDailyPin, getTodayPin } from '../utils/securityPin';
 
 export interface DocumentRecord {
   id: string;
@@ -100,13 +101,7 @@ export const OfficialDocumentsArchive: React.FC<OfficialDocumentsArchiveProps> =
   };
 
   const validatePin = (pin: string): boolean => {
-    const normalized = pin.trim().toLowerCase();
-    const now = new Date();
-    const dd = String(now.getDate()).padStart(2, '0');
-    const mm = String(now.getMonth() + 1).padStart(2, '0');
-    const yy = String(now.getFullYear()).slice(-2);
-    const expected = `${dd}${mm}${yy}-lgttd`;
-    return normalized === expected || normalized === '301026-lgttd';
+    return validateDailyPin(pin, 'lgttd') || validateDailyPin(pin, 'pbj');
   };
 
   const handleRequestDelete = (id: string) => {

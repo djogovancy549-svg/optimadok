@@ -5,6 +5,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ProcurementPackage, DocumentChecklistItem } from '../types/procurement';
+import { validateDailyPin, getTodayPin } from '../utils/securityPin';
 import {
   Calendar,
   Printer,
@@ -351,32 +352,9 @@ export const ProcurementEvaluationView: React.FC<ProcurementEvaluationViewProps>
     return () => window.removeEventListener('click', handleClickOutside);
   }, []);
 
-  // Dynamic PIN validation: DDMMYY-lgttd
+  // Dynamic PIN validation: DDMMYY-lgttd or DDMMYY-pbj
   const validateLgttdPin = (inputPin: string): boolean => {
-    const normalized = inputPin.trim().toLowerCase();
-    const now = new Date();
-
-    try {
-      const formatter = new Intl.DateTimeFormat('id-ID', {
-        timeZone: 'Asia/Makassar',
-        day: '2-digit',
-        month: '2-digit',
-        year: '2-digit',
-      });
-      const parts = formatter.formatToParts(now);
-      const day = parts.find((p) => p.type === 'day')?.value || String(now.getDate()).padStart(2, '0');
-      const month = parts.find((p) => p.type === 'month')?.value || String(now.getMonth() + 1).padStart(2, '0');
-      const year = parts.find((p) => p.type === 'year')?.value || String(now.getFullYear()).slice(-2);
-      if (normalized === `${day}${month}${year}-lgttd`.toLowerCase()) return true;
-    } catch {}
-
-    const dd = String(now.getDate()).padStart(2, '0');
-    const mm = String(now.getMonth() + 1).padStart(2, '0');
-    const yy = String(now.getFullYear()).slice(-2);
-    if (normalized === `${dd}${mm}${yy}-lgttd`.toLowerCase()) return true;
-
-    if (normalized === '301026-lgttd') return true;
-    return false;
+    return validateDailyPin(inputPin, 'lgttd') || validateDailyPin(inputPin, 'pbj');
   };
 
   // Toggle Criterion Pass / Fail

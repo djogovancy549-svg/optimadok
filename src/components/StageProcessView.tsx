@@ -391,8 +391,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
   const [newDocTitle, setNewDocTitle] = useState('');
   const [newVerifiedBy, setNewVerifiedBy] = useState('Pejabat Pengadaan');
 
-  // PIN security for checklist item deletion (Required: 301026-pbj)
-  const REQUIRED_DELETE_PIN = '301026-pbj';
+  // PIN security for checklist item deletion
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [enteredDeletePin, setEnteredDeletePin] = useState('');
   const [deletePinError, setDeletePinError] = useState('');
@@ -462,11 +461,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
     e.preventDefault();
     if (!deleteTargetId) return;
 
-    const isMatch =
-      enteredDeletePin.trim().toLowerCase() === REQUIRED_DELETE_PIN.toLowerCase() ||
-      validateDailyPin(enteredDeletePin);
-
-    if (!isMatch) {
+    if (!validateDailyPin(enteredDeletePin, 'pbj')) {
       setDeletePinError('PIN Otorisasi Penghapusan Salah! Akses Ditolak.');
       return;
     }
@@ -1991,7 +1986,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
                       setEnteredDeletePin(e.target.value);
                       if (deletePinError) setDeletePinError('');
                     }}
-                    placeholder="Masukkan PIN Otorisasi"
+                    placeholder={`Contoh: ${getTodayPin('pbj')}`}
                     className="w-full pl-9 pr-3 py-2 text-xs border border-stone-300 rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-[#701524] tracking-wider"
                   />
                   <KeyRound className="w-4 h-4 text-stone-400 absolute left-3 top-2.5" />
