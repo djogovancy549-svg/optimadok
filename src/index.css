@@ -82,6 +82,10 @@ body {
   input,
   select,
   textarea,
+  .stage-header-controls,
+  .stage-package-summary,
+  .stage-action-toolbar,
+  .stage-progress-banner,
   .print\:hidden,
   .no-print,
   [data-no-print],
@@ -93,9 +97,12 @@ body {
     display: none !important;
     visibility: hidden !important;
     height: 0 !important;
+    max-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
+    border: none !important;
     opacity: 0 !important;
+    overflow: hidden !important;
   }
 
   /* 5. Nonaktifkan grid 2-kolom (SPLIT_VIEW) agar dokumen mengambil 100% lebar kertas A4 */

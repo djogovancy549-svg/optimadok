@@ -753,7 +753,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
   return (
     <div className="space-y-5">
       {/* Top Header Controls & Primary View Navigation Switcher */}
-      <div className="bg-white border border-stone-200/90 rounded-xl p-4 shadow-xs space-y-3">
+      <div className="bg-white border border-stone-200/90 rounded-xl p-4 shadow-xs space-y-3 print:hidden no-print stage-header-controls">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
@@ -869,7 +869,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
       </div>
 
       {/* Package Profile Summary */}
-      <div className="bg-white border border-stone-200/90 rounded-xl p-4 shadow-xs space-y-3">
+      <div className="bg-white border border-stone-200/90 rounded-xl p-4 shadow-xs space-y-3 print:hidden no-print stage-package-summary">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="space-y-0.5">
             <div className="flex items-center gap-2 flex-wrap">
@@ -900,7 +900,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
       {activeSubTab === 'CHECKLIST_TABLE' && (
         <div className="space-y-5">
           {/* Action Toolbar & Button Bar (Neatly arranged right above checklist format) */}
-          <div className="bg-stone-900 text-white rounded-2xl p-4 shadow-md space-y-3.5">
+          <div className="bg-stone-900 text-white rounded-2xl p-4 shadow-md space-y-3.5 print:hidden no-print stage-action-toolbar">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-stone-800">
               <div className="flex items-center gap-3">
                 <div className="p-2.5 bg-white/10 rounded-xl shrink-0 text-amber-400">
@@ -988,7 +988,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
           </div>
 
           {/* Status Progress Banner */}
-          <div className="bg-white border border-stone-200/90 rounded-xl p-4 shadow-xs space-y-2">
+          <div className="bg-white border border-stone-200/90 rounded-xl p-4 shadow-xs space-y-2 print:hidden no-print stage-progress-banner">
             <div className="flex items-center justify-between text-xs font-bold">
               <span className="text-stone-700">Status Kelengkapan Berkas Pengadaan:</span>
               <span className={checklistPercentage === 100 ? 'text-emerald-700 font-mono' : 'text-[#701524] font-mono'}>
@@ -1057,7 +1057,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
                                 <button
                                   type="button"
                                   onClick={() => handleRequestDeleteChecklistItem(item.id)}
-                                  className="p-1 text-stone-400 hover:text-rose-600 rounded transition-colors shrink-0 cursor-pointer"
+                                  className="p-1 text-stone-400 hover:text-rose-600 rounded transition-colors shrink-0 cursor-pointer print:hidden no-print"
                                   title="Hapus item ceklist dokumen ini (Dilindungi PIN)"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -1079,7 +1079,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
                                     href="https://unggahsipelang.pages.dev/"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-[10px] font-extrabold text-[#701524] hover:text-[#500f1a] inline-flex items-center gap-1 bg-gradient-to-r from-rose-50 to-amber-50 hover:from-rose-100 hover:to-amber-100 px-2 py-0.8 rounded-lg border border-rose-200/90 shadow-2xs shrink-0 transition-all cursor-pointer group"
+                                    className="text-[10px] font-extrabold text-[#701524] hover:text-[#500f1a] inline-flex items-center gap-1 bg-gradient-to-r from-rose-50 to-amber-50 hover:from-rose-100 hover:to-amber-100 px-2 py-0.8 rounded-lg border border-rose-200/90 shadow-2xs shrink-0 transition-all cursor-pointer group print:hidden no-print"
                                     title="Unggah berkas / foto baru di link ini"
                                   >
                                     <UploadCloud className="w-3 h-3 text-[#701524] group-hover:scale-110 transition-transform" />
@@ -1135,7 +1135,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
                                 </div>
                               </div>
 
-                              <div className="pt-1 flex items-center gap-2 flex-wrap">
+                              <div className="pt-1 flex items-center gap-2 flex-wrap print:hidden no-print">
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -1501,7 +1501,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
 
           {/* Stage 2 Direct Document Generator Banner */}
           {activeStageKey === 'PERMINTAAN_PENAWARAN' && (
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs print:hidden no-print">
               <div className="flex items-start gap-3">
                 <div className="p-2.5 bg-amber-500 text-stone-950 rounded-xl shrink-0 mt-0.5 sm:mt-0 font-bold shadow-2xs">
                   <Calendar className="w-5 h-5 text-stone-950" />
@@ -1536,7 +1536,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
 
           {/* Stage 3 Direct Document Generator Banner */}
           {activeStageKey === 'EVALUASI_PENAWARAN' && (
-            <div className="bg-gradient-to-r from-rose-50 via-pink-50 to-amber-50 border border-rose-300 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+            <div className="bg-gradient-to-r from-rose-50 via-pink-50 to-amber-50 border border-rose-300 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs print:hidden no-print">
               <div className="flex items-start gap-3">
                 <div className="p-2.5 bg-[#701524] text-white rounded-xl shrink-0 mt-0.5 sm:mt-0 font-bold shadow-2xs">
                   <FileCheck2 className="w-5 h-5 text-white" />
