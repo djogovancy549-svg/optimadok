@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Bell, Webhook, FolderCheck } from 'lucide-react';
+import { Bell, Webhook, LogOut } from 'lucide-react';
 
 interface NavbarProps {
   currentMenuTitle: string;
@@ -31,7 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </span>
       </div>
 
-      {/* Zone 2: Google Webhook Control & User Tag */}
+      {/* Zone 2: Google Webhook Control & Logout Button */}
       <div className="flex items-center gap-2.5">
         {/* Google Sheet & Drive Webhook Settings Trigger */}
         <button
@@ -50,15 +50,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         )}
 
-        <div className="flex items-center gap-2 pl-2 border-l border-stone-200">
-          <div className="w-7 h-7 rounded-full bg-[#701524] text-white flex items-center justify-center font-bold text-xs shadow-xs">
-            BP
-          </div>
-          <div className="hidden lg:block text-left">
-            <div className="text-xs font-semibold text-stone-900 leading-tight">Bambang Pratama, S.Kom.</div>
-            <div className="text-[10px] text-stone-500">Pejabat Pengadaan (PP)</div>
-          </div>
-        </div>
+        {/* Tombol Logout Pengganti Nama */}
+        <a
+          href="/__logout"
+          className="px-3.5 py-1.5 bg-[#701524] hover:bg-rose-900 active:bg-stone-900 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs border border-rose-800 hover:scale-105 active:scale-95"
+          title="Keluar / Logout dari Aplikasi SIPELANG"
+        >
+          <LogOut className="w-3.5 h-3.5 text-rose-200" />
+          <span>Logout</span>
+        </a>
       </div>
     </header>
   );
