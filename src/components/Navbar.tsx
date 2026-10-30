@@ -20,7 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenGoogleSettings,
 }) => {
   return (
-    <header className="h-16 bg-white border-b border-rose-100/70 px-4 sm:px-6 flex items-center justify-between gap-4 shrink-0 sticky top-0 z-20">
+    <header className="h-16 bg-white border-b border-rose-100/70 px-4 sm:px-6 flex items-center justify-between gap-4 shrink-0 sticky top-0 z-20 print:hidden no-print">
       {/* Zone 1: Context Breadcrumb */}
       <div className="flex items-center gap-2 text-xs">
         <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-amber-500">OPTIMA.DOK</span>

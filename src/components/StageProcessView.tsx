@@ -23,6 +23,7 @@ import { ProcurementNegotiationView } from './ProcurementNegotiationView';
 import { AttendanceListView } from './AttendanceListView';
 import { ActivityDocumentationView } from './ActivityDocumentationView';
 import { MainNavTab } from './Sidebar';
+import { getTodayPin, validateDailyPin } from '../utils/securityPin';
 import {
   Calendar,
   CheckCircle2,
@@ -461,7 +462,11 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
     e.preventDefault();
     if (!deleteTargetId) return;
 
-    if (enteredDeletePin.trim().toLowerCase() !== REQUIRED_DELETE_PIN.toLowerCase()) {
+    const isMatch =
+      enteredDeletePin.trim().toLowerCase() === REQUIRED_DELETE_PIN.toLowerCase() ||
+      validateDailyPin(enteredDeletePin);
+
+    if (!isMatch) {
       setDeletePinError('PIN Otorisasi Penghapusan Salah! Akses Ditolak.');
       return;
     }
@@ -2096,9 +2101,9 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
 
       {/* PRINT MODAL PREVIEW (Official Clean Document Print Layout) */}
       {isPrintModalOpen && (
-        <div className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl border border-stone-200">
-            <div className="flex items-center justify-between pb-3 border-b border-stone-200">
+        <div className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4 modal-backdrop print:p-0 print:m-0 print:static print:bg-transparent">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-4 shadow-2xl border border-stone-200 print:max-h-none print:overflow-visible print:p-0 print:m-0 print:border-none print:shadow-none print:w-full print:max-w-none">
+            <div className="flex items-center justify-between pb-3 border-b border-stone-200 print:hidden no-print">
               <div className="flex items-center gap-2">
                 <Printer className="w-5 h-5 text-[#701524]" />
                 <h3 className="font-bold text-sm text-stone-900">
@@ -2115,8 +2120,8 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
             </div>
 
             {/* Printable Content Container */}
-            <div className="p-6 bg-white border border-stone-900 space-y-4 text-xs font-sans text-stone-900">
-              <div className="text-center space-y-1 border-b-2 border-stone-900 pb-3">
+            <div className="p-6 bg-white border border-stone-900 space-y-4 text-xs font-sans text-stone-900 print:border-none print:p-0 print:m-0 printable-document">
+              <div className="text-center space-y-1 border-b-2 border-stone-900 pb-3 avoid-break kop-surat-header">
                 <h2 className="font-bold text-sm uppercase tracking-wide">
                   PEMERINTAH KABUPATEN NAGEKEO
                 </h2>
@@ -2167,7 +2172,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
                 </tbody>
               </table>
 
-              <div className="pt-4 flex justify-between items-end text-xs">
+              <div className="pt-4 flex justify-between items-end text-xs avoid-break signature-block">
                 <div>
                   <div className="font-bold">Status Verifikasi:</div>
                   <div className="text-emerald-800 font-bold">{completedChecklistCount} dari 8 Dokumen Lengkap</div>
@@ -2181,7 +2186,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex justify-end gap-2 pt-2 print:hidden no-print">
               <button
                 type="button"
                 onClick={() => setIsPrintModalOpen(false)}

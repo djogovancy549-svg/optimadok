@@ -39,11 +39,11 @@ export const ReviewPrintModal: React.FC<ReviewPrintModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-stone-900/70 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-white rounded-2xl shadow-2xl border border-stone-200 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-stone-900/70 backdrop-blur-xs overflow-y-auto modal-backdrop print:p-0 print:m-0 print:static print:bg-transparent">
+      <div className="bg-white rounded-2xl shadow-2xl border border-stone-200 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150 print:max-h-none print:overflow-visible print:border-none print:shadow-none print:w-full print:max-w-none">
         
         {/* Modal Toolbar (Screen only) */}
-        <div className="bg-[#701524] text-white px-5 py-3.5 flex items-center justify-between shrink-0 print:hidden">
+        <div className="bg-[#701524] text-white px-5 py-3.5 flex items-center justify-between shrink-0 print:hidden no-print">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-rose-300" />
             <h2 className="text-sm sm:text-base font-bold tracking-tight">
@@ -72,11 +72,11 @@ export const ReviewPrintModal: React.FC<ReviewPrintModalProps> = ({
         </div>
 
         {/* Printable Document Body */}
-        <div className="flex-1 overflow-y-auto p-8 sm:p-10 text-stone-900 text-xs font-serif leading-normal bg-white print:p-0 print:overflow-visible">
-          <div className="max-w-3xl mx-auto space-y-6">
+        <div className="flex-1 overflow-y-auto p-8 sm:p-10 text-stone-900 text-xs font-serif leading-normal bg-white print:p-0 print:overflow-visible printable-document">
+          <div className="max-w-3xl mx-auto space-y-6 print:max-w-none print:w-full">
             
             {/* KOP SURAT PEMKAB NAGEKEO */}
-            <div className="text-center border-b-2 border-stone-900 pb-3 space-y-1">
+            <div className="text-center border-b-2 border-stone-900 pb-3 space-y-1 avoid-break kop-surat-header">
               <div className="flex items-center justify-center gap-3">
                 <div className="w-12 h-14 bg-stone-100 border border-stone-300 rounded flex items-center justify-center text-[10px] font-sans font-bold text-stone-500">
                   LAMBANG NAGEKEO
@@ -197,7 +197,7 @@ export const ReviewPrintModal: React.FC<ReviewPrintModalProps> = ({
             </div>
 
             {/* TANDA TANGAN REVIU */}
-            <div className="pt-6 font-sans text-[11px] space-y-4">
+            <div className="pt-6 font-sans text-[11px] space-y-4 avoid-break signature-block">
               <p className="text-right text-stone-600">Disusun di Mbay, Tanggal 28 September 2026</p>
 
               <div className="grid grid-cols-3 gap-4 text-center pt-2">

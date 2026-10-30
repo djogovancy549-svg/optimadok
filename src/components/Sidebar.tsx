@@ -114,7 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`bg-[#23090e] text-rose-100/90 flex flex-col shrink-0 min-h-screen border-r border-[#3a141b] select-none transition-all duration-300 relative z-30 ${
+      className={`bg-[#23090e] text-rose-100/90 flex flex-col shrink-0 min-h-screen border-r border-[#3a141b] select-none transition-all duration-300 relative z-30 print:hidden no-print ${
         collapsed ? 'w-16' : 'w-64'
       }`}
     >

@@ -313,12 +313,12 @@ export default function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
-    <div className="flex h-screen bg-stone-100/70 font-sans text-stone-900 overflow-hidden">
+    <div className="flex h-screen bg-stone-100/70 font-sans text-stone-900 overflow-hidden print:h-auto print:overflow-visible print:bg-white print:block">
       
       {/* TOAST NOTIFICATION */}
       {toast && (
         <div
-          className={`fixed top-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl border text-sm font-semibold transition-all ${
+          className={`fixed top-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl border text-sm font-semibold transition-all print:hidden no-print ${
             toast.type === 'success'
               ? 'bg-emerald-900 text-emerald-100 border-emerald-700'
               : 'bg-rose-900 text-rose-100 border-rose-700'
@@ -350,7 +350,7 @@ export default function App() {
       />
 
       {/* Main View Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden print:h-auto print:overflow-visible print:block print:w-full">
         {/* Top Header */}
         <Navbar
           currentMenuTitle={getTabTitle()}
@@ -360,8 +360,8 @@ export default function App() {
         />
 
         {/* Viewport Content */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8">
-          <div className="max-w-7xl mx-auto">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 print:p-0 print:m-0 print:overflow-visible print:block print:w-full">
+          <div className="max-w-7xl mx-auto print:max-w-none print:w-full print:m-0 print:p-0">
             {activeTab === 'dashboard' && (
               <DashboardOverview
                 packages={packages}

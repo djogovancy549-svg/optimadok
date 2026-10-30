@@ -906,9 +906,9 @@ export const ArchivingView: React.FC<ArchivingViewProps> = ({
 
       {/* MODAL 2 / PRINTABLE: LEMBAR KENDALI REVIU AUDIT */}
       {selectedPackageForKendali && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[88vh] shadow-2xl border border-stone-200 overflow-hidden flex flex-col">
-            <div className="p-4 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-in fade-in modal-backdrop print:p-0 print:m-0 print:static print:bg-transparent">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[88vh] shadow-2xl border border-stone-200 overflow-hidden flex flex-col print:max-h-none print:overflow-visible print:border-none print:shadow-none print:w-full print:max-w-none">
+            <div className="p-4 border-b border-stone-200 flex items-center justify-between bg-stone-50 print:hidden no-print">
               <h3 className="font-bold text-xs text-stone-900 flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-[#701524]" />
                 <span>Lembar Kendali Pengawasan Audit Pengadaan Langsung</span>
@@ -932,8 +932,8 @@ export const ArchivingView: React.FC<ArchivingViewProps> = ({
               </div>
             </div>
 
-            <div className="p-5 overflow-y-auto space-y-4 text-xs">
-              <div className="text-center pb-3 border-b border-stone-200 space-y-0.5">
+            <div className="p-5 overflow-y-auto space-y-4 text-xs printable-document">
+              <div className="text-center pb-3 border-b border-stone-200 space-y-0.5 avoid-break kop-surat-header">
                 <h2 className="text-xs font-bold uppercase tracking-wider text-stone-900">
                   LEMBAR KENDALI DOKUMEN PENGADAAN LANGSUNG (E-ARSIP)
                 </h2>
@@ -993,7 +993,7 @@ export const ArchivingView: React.FC<ArchivingViewProps> = ({
                 </tbody>
               </table>
 
-              <div className="grid grid-cols-2 pt-4 text-center text-xs">
+              <div className="grid grid-cols-2 pt-4 text-center text-xs avoid-break signature-block">
                 <div>
                   <p className="text-stone-500 text-[11px]">Pejabat Pembuat Komitmen (PPK)</p>
                   <div className="h-12" />

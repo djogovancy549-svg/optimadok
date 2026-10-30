@@ -240,7 +240,7 @@ export const PackageReportingView: React.FC<PackageReportingViewProps> = ({
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* HEADER & CONTROLS */}
-      <div className="bg-white border border-stone-200 rounded-2xl p-5 shadow-xs space-y-4">
+      <div className="bg-white border border-stone-200 rounded-2xl p-5 shadow-xs space-y-4 print:hidden no-print">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
@@ -319,8 +319,21 @@ export const PackageReportingView: React.FC<PackageReportingViewProps> = ({
       </div>
 
       {/* REPORTING MASTER TABLE */}
-      <div className="bg-white border border-stone-200 rounded-2xl shadow-xs overflow-hidden">
-        <div className="p-4 bg-stone-50 border-b border-stone-200 flex items-center justify-between">
+      <div className="bg-white border border-stone-200 rounded-2xl shadow-xs overflow-hidden printable-document print:border-none print:shadow-none print:w-full print:m-0 print:p-0">
+        {/* Printable Official Kop for Printout */}
+        <div className="hidden print:block p-4 text-center border-b-2 border-stone-900 pb-3 mb-4 space-y-1 avoid-break kop-surat-header">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-stone-900">
+            PEMERINTAH KABUPATEN NAGEKEO
+          </h2>
+          <h1 className="text-sm font-extrabold uppercase tracking-wide text-stone-950">
+            LAPORAN KINERJA & REALISASI KONTRAK PENGADAAN BARANG/JASA
+          </h1>
+          <p className="text-[10px] text-stone-500 font-mono">
+            Tahun Anggaran 2026 • Rekapitulasi Paket Tender & Pengadaan Langsung
+          </p>
+        </div>
+
+        <div className="p-4 bg-stone-50 border-b border-stone-200 flex items-center justify-between print:hidden no-print">
           <div className="text-xs font-black text-stone-700 uppercase tracking-wider flex items-center gap-2">
             <FileSpreadsheet className="w-4 h-4 text-[#701524]" />
             <span>Daftar Pelaporan Kontrak & Kinerja ({filteredPackages.length} Paket)</span>
@@ -345,7 +358,7 @@ export const PackageReportingView: React.FC<PackageReportingViewProps> = ({
                 <th className="p-3">Pelaksana (CV/PT)</th>
                 <th className="p-3">Serah Terima & Keuangan</th>
                 <th className="p-3">PPK & PPTK</th>
-                <th className="p-3 text-center w-20">Aksi</th>
+                <th className="p-3 text-center w-20 print:hidden no-print">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-200 font-medium text-stone-800">
@@ -429,7 +442,7 @@ export const PackageReportingView: React.FC<PackageReportingViewProps> = ({
                         <div className="font-bold text-stone-900">PPK: {pkg.ppkName || '-'}</div>
                         <div className="text-stone-500">PPTK: {pkg.pptkName || 'Ir. Budi Santoso'}</div>
                       </td>
-                      <td className="p-3 text-center flex flex-col gap-1">
+                      <td className="p-3 text-center flex flex-col gap-1 print:hidden no-print">
                         <button
                           type="button"
                           onClick={() => handleOpenEdit(pkg)}

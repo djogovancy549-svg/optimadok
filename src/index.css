@@ -26,3 +26,160 @@ body {
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* =========================================================================
+   UNIVERSAL DOCUMENT PRINT ENGINE (A4 RESMI PEMKAB NAGEKEO)
+   - Hanya mencetak lembar dokumen resmi tanpa web chrome (navbar, sidebar,
+     action toolbar, tombol kontrol, form input, dan backdrop modal)
+   - Mendukung cetak multi-halaman penuh (semua halaman tanpa terpotong)
+   ========================================================================= */
+
+@media print {
+  /* 1. Atur Ukuran Kertas & Margin A4 Standar Dinas */
+  @page {
+    size: A4 portrait;
+    margin: 15mm 15mm 15mm 15mm;
+  }
+
+  /* 2. Bersihkan Background & Body */
+  html, body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 11pt !important;
+    line-height: 1.45 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 3. Buka SEMUA pembatas overflow & tinggi agar semua halaman tercetak */
+  #root,
+  .min-h-screen,
+  main,
+  div,
+  section,
+  article {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    box-shadow: none !important;
+  }
+
+  /* 4. Sembunyikan SEMUA elemen web yang bukan bagian lembar dokumen */
+  aside,
+  header,
+  nav,
+  footer,
+  button,
+  input,
+  select,
+  textarea,
+  .print\:hidden,
+  .no-print,
+  [data-no-print],
+  .marquee-ticker,
+  .toast-notification,
+  .animate-marquee,
+  .sidebar,
+  .navbar {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+  }
+
+  /* 5. Nonaktifkan grid 2-kolom (SPLIT_VIEW) agar dokumen mengambil 100% lebar kertas A4 */
+  .grid {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  [class*="lg:col-span-"],
+  [class*="col-span-"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  /* 6. Hilangkan frame modal & backdrop gelap saat cetak dari modal */
+  .modal-backdrop,
+  .fixed.inset-0,
+  [role="dialog"] {
+    position: static !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    max-height: none !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    display: block !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* 7. Format Lembar Dokumen Resmi: Full width, tanpa border web, shadow, atau rounded */
+  .printable-document,
+  .printable-paper,
+  [data-printable-document="true"] {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    color: #000000 !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* 8. Penanganan Pemotongan Halaman (Page Breaks & Tables) */
+  table {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .avoid-break,
+  .signature-block,
+  .kop-surat,
+  .kop-surat-header {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+}

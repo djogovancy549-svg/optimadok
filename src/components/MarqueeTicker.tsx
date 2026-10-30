@@ -27,7 +27,7 @@ export const MarqueeTicker: React.FC<MarqueeTickerProps> = ({
   const fullText = list.join('  •  ');
 
   return (
-    <div className={`bg-gradient-to-r from-[#500e19] via-[#701524] to-[#500e19] text-white overflow-hidden py-1.5 px-3 flex items-center gap-2 text-xs shadow-inner shrink-0 ${className}`}>
+    <div className={`bg-gradient-to-r from-[#500e19] via-[#701524] to-[#500e19] text-white overflow-hidden py-1.5 px-3 flex items-center gap-2 text-xs shadow-inner shrink-0 print:hidden no-print ${className}`}>
       {/* Badge Indicator */}
       <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-rose-950/80 border border-rose-300/30 text-[10px] font-bold text-rose-200 uppercase tracking-wider shrink-0 z-10 shadow-xs">
         <Megaphone className="w-3 h-3 text-amber-300 animate-pulse" />

@@ -78,7 +78,7 @@ export const AttendanceListView: React.FC<AttendanceListViewProps> = ({
 
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
-      <div className="bg-stone-900 text-white rounded-2xl p-4 shadow-md flex items-center justify-between gap-4 print:hidden">
+      <div className="bg-stone-900 text-white rounded-2xl p-4 shadow-md flex items-center justify-between gap-4 print:hidden no-print">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-blue-500/20 rounded-xl">
             <UserCheck className="w-5 h-5 text-blue-400" />
@@ -190,10 +190,10 @@ export const AttendanceListView: React.FC<AttendanceListViewProps> = ({
           </div>
         )}
 
-        <div className={`${viewMode === 'SPLIT_VIEW' ? 'lg:col-span-7' : 'max-w-4xl mx-auto w-full'} overflow-x-auto`}>
-          <div className="bg-white border border-stone-300 rounded-2xl shadow-lg p-10 font-sans text-stone-900 leading-normal min-w-[700px] print:shadow-none print:border-none print:p-0 print:m-0">
-             <div className="relative pb-3 border-b-[2.5px] border-stone-900 flex items-center justify-center gap-4">
-               <div className="w-16 h-20 shrink-0 flex items-center justify-center">
+        <div className={`${viewMode === 'SPLIT_VIEW' ? 'lg:col-span-7' : 'max-w-4xl mx-auto w-full'} overflow-x-auto print:overflow-visible print:w-full print:max-w-none print:m-0 print:p-0`}>
+          <div className="bg-white border border-stone-300 rounded-2xl shadow-lg p-10 font-sans text-stone-900 leading-normal min-w-[700px] print:shadow-none print:border-none print:p-0 print:m-0 print:w-full printable-document">
+             <div className="relative pb-3 border-b-[2.5px] border-stone-900 flex items-center justify-center gap-4 avoid-break kop-surat-header">
+               <div className={`w-16 h-20 shrink-0 flex items-center justify-center ${!customLogo ? 'print:hidden' : ''}`}>
                   {customLogo ? (
                     <img src={customLogo} alt="Logo" className="max-w-full max-h-full object-contain" />
                   ) : (
@@ -267,7 +267,7 @@ export const AttendanceListView: React.FC<AttendanceListViewProps> = ({
                               </button>
                             </div>
                           ) : (
-                            <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 border border-dashed border-stone-400 rounded-lg text-[10px] font-bold text-stone-700 transition-all shadow-2xs">
+                            <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 border border-dashed border-stone-400 rounded-lg text-[10px] font-bold text-stone-700 transition-all shadow-2xs print:hidden no-print">
                               <Paperclip className="w-3 h-3 text-blue-600" />
                               <span>Tempel Tanda Tangan</span>
                               <input 

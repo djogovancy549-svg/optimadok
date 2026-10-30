@@ -1018,13 +1018,13 @@ export const ProcurementEvaluationView: React.FC<ProcurementEvaluationViewProps>
         <div
           className={`${
             viewMode === 'SPLIT_VIEW' ? 'lg:col-span-7' : 'max-w-4xl mx-auto w-full'
-          } overflow-x-auto`}
+          } overflow-x-auto print:overflow-visible print:w-full print:max-w-none print:m-0 print:p-0`}
         >
           {/* ========================================================================= */}
           {/* ACTION TOOLBAR DIRECTLY ABOVE DOCUMENT PREVIEW */}
           {/* "tombol di rapikan di atas dokumen" */}
           {/* ========================================================================= */}
-          <div className="bg-stone-900 text-white rounded-2xl p-3 sm:p-4 shadow-md mb-3 space-y-3 print:hidden">
+          <div className="bg-stone-900 text-white rounded-2xl p-3 sm:p-4 shadow-md mb-3 space-y-3 print:hidden no-print">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2.5 border-b border-stone-800">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -1330,12 +1330,12 @@ export const ProcurementEvaluationView: React.FC<ProcurementEvaluationViewProps>
           </div>
 
           {/* Printable White Paper Box */}
-          <div className="bg-white border border-stone-300/80 rounded-2xl shadow-lg p-6 sm:p-10 font-sans text-stone-900 leading-normal min-w-[650px] print:border-none print:shadow-none print:p-0 print:m-0">
+          <div className="bg-white border border-stone-300/80 rounded-2xl shadow-lg p-6 sm:p-10 font-sans text-stone-900 leading-normal min-w-[650px] print:border-none print:shadow-none print:p-0 print:m-0 print:w-full printable-document">
             {/* KOP SURAT RESMI PEMERINTAH KABUPATEN NAGEKEO */}
-            <div className="relative pb-3 border-b-[2.5px] border-stone-900 space-y-1">
+            <div className="relative pb-3 border-b-[2.5px] border-stone-900 space-y-1 avoid-break kop-surat-header">
               <div className="flex items-center justify-center gap-4">
                 {/* STRUKTUR LOGO (DIKOSONGKAN SECARA DEFAULT, STRUKTUR DISIAPKAN) */}
-                <div className="w-20 h-24 shrink-0 flex items-center justify-center relative">
+                <div className={`w-20 h-24 shrink-0 flex items-center justify-center relative ${!customLogo ? 'print:hidden' : ''}`}>
                   {customLogo ? (
                     <div className="relative group w-full h-full flex items-center justify-center">
                       <img
@@ -1626,7 +1626,7 @@ export const ProcurementEvaluationView: React.FC<ProcurementEvaluationViewProps>
               {/* SIGNATURE BLOCK (Pejabat Pengadaan PUPR Kab. Nagekeo) */}
               {/* Matches image_af7fdebe.png */}
               {/* ========================================================================= */}
-              <div className="pt-8 flex justify-end">
+              <div className="pt-8 flex justify-end avoid-break signature-block">
                 <div className="w-80 text-center space-y-1">
                   <div className="text-xs font-normal">
                     Pejabat Pengadaan pada
