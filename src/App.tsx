@@ -25,6 +25,7 @@ import { OPDNumberingView } from './components/OPDNumberingView';
 import { PackageDetailModal } from './components/PackageDetailModal';
 import { CreatePackageModal } from './components/CreatePackageModal';
 import { GoogleIntegrationModal } from './components/GoogleIntegrationModal';
+import { SecurityPinModal } from './components/SecurityPinModal';
 import { OfficialDocumentsArchive, DocumentRecord } from './components/OfficialDocumentsArchive';
 import { PackageReportingView } from './components/PackageReportingView';
 import { CheckCircle2, AlertTriangle, X } from 'lucide-react';
@@ -80,12 +81,32 @@ export default function App() {
   const [reviewSelectedDocId, setReviewSelectedDocId] = useState<string | undefined>(undefined);
   const [uploadPreselectedPackageId, setUploadPreselectedPackageId] = useState<string | undefined>(undefined);
 
+  const [isPinModalOpen, setIsPinModalOpen] = useState(false);
+  const [packageToDelete, setPackageToDelete] = useState<ProcurementPackage | null>(null);
+
   // Ensure initial packages load if storage is empty
   useEffect(() => {
     if (packages.length === 0 && INITIAL_PACKAGES.length > 0) {
       setPackages(INITIAL_PACKAGES);
     }
   }, []);
+
+  const handleDeletePackage = (pkgId: string) => {
+    const pkg = packages.find((p) => p.id === pkgId);
+    if (pkg) {
+      setPackageToDelete(pkg);
+      setIsPinModalOpen(true);
+    }
+  };
+
+  const confirmDeletePackage = () => {
+    if (packageToDelete) {
+      setPackages((prev) => prev.filter((p) => p.id !== packageToDelete.id));
+      setPackageToDelete(null);
+      setIsPinModalOpen(false);
+      showToast('Paket berhasil dihapus', 'success');
+    }
+  };
 
   useEffect(() => {
     try {
@@ -382,6 +403,8 @@ export default function App() {
                 onSelectPackage={(pkg) => setSelectedPackageForDetail(pkg)}
                 onOpenStageTracker={(pkg) => openStageTrackerForPackage(pkg)}
                 onOpenReviewForPackage={(pkg) => openReviewForPackage(pkg)}
+                onEditPackage={(pkg) => showToast(`Edit paket ${pkg.name} (Segera Hadir)`, 'success')}
+                onDeletePackage={handleDeletePackage}
               />
             )}
 
@@ -562,6 +585,19 @@ export default function App() {
         onResetData={handleResetData}
         onShowToast={showToast}
       />
+
+      {/* PIN SECURITY MODAL */}
+      {packageToDelete && (
+        <SecurityPinModal
+          isOpen={isPinModalOpen}
+          title="Hapus Paket Pengadaan"
+          itemName={packageToDelete.name}
+          itemTypeLabel="Paket Pengadaan"
+          warningNote="Paket ini akan dihapus secara permanen dari daftar pengadaan."
+          onConfirm={confirmDeletePackage}
+          onClose={() => setIsPinModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

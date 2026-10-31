@@ -346,7 +346,7 @@ export const OfficialDocumentsArchive: React.FC<OfficialDocumentsArchiveProps> =
               <div className="space-y-1">
                 <h3 className="text-lg font-black text-stone-900 tracking-tight">Otorisasi Hapus Dokumen</h3>
                 <p className="text-xs text-stone-500 leading-relaxed px-4">
-                  Penghapusan rekaman dokumen memerlukan PIN Otorisasi OPTIMA.DOK (Format: <strong>DDMMYY-lgttd</strong>)
+                  Penghapusan rekaman dokumen memerlukan PIN Otorisasi OPTIMA.DOK untuk menjaga keamanan data.
                 </p>
               </div>
 

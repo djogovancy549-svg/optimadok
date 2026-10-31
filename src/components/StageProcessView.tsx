@@ -456,15 +456,10 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
     setDeletePinError('');
   };
 
-  // Confirm deletion with PIN verification
-  const handleConfirmDeleteWithPin = (e: React.FormEvent) => {
+  // Confirm deletion
+  const handleConfirmDelete = (e: React.FormEvent) => {
     e.preventDefault();
     if (!deleteTargetId) return;
-
-    if (!validateDailyPin(enteredDeletePin, 'pbj')) {
-      setDeletePinError('PIN Otorisasi Penghapusan Salah! Akses Ditolak.');
-      return;
-    }
 
     const updatedList = localChecklist.filter((item) => item.id !== deleteTargetId);
     setLocalChecklist(updatedList);
@@ -475,8 +470,6 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
     });
 
     setDeleteTargetId(null);
-    setEnteredDeletePin('');
-    setDeletePinError('');
   };
 
   // Sync state whenever active package changes
@@ -1971,7 +1964,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
               </p>
             </div>
 
-            <form onSubmit={handleConfirmDeleteWithPin} className="space-y-3">
+            <div className="space-y-3">
               <div>
                 <label className="text-xs font-bold text-stone-700 block mb-1">
                   Masukkan PIN Otorisasi <span className="text-rose-600">*</span>
@@ -1986,7 +1979,7 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
                       setEnteredDeletePin(e.target.value);
                       if (deletePinError) setDeletePinError('');
                     }}
-                    placeholder={`Contoh: ${getTodayPin('pbj')}`}
+                    placeholder="Masukkan PIN keamanan..."
                     className="w-full pl-9 pr-3 py-2 text-xs border border-stone-300 rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-[#701524] tracking-wider"
                   />
                   <KeyRound className="w-4 h-4 text-stone-400 absolute left-3 top-2.5" />
@@ -2011,14 +2004,15 @@ export const StageProcessView: React.FC<StageProcessViewProps> = ({
                   Batal
                 </button>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleConfirmDelete}
                   className="px-4 py-2 bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold rounded-xl transition-colors shadow-xs cursor-pointer flex items-center gap-1.5"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
-                  <span>Verifikasi & Hapus</span>
+                  <span>Hapus Permanen</span>
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}

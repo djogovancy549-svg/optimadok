@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldAlert, KeyRound, Eye, EyeOff, Trash2, X, AlertTriangle, CheckCircle2, Calendar } from 'lucide-react';
-import { getTodayPin, getTodayPinParts, validateDailyPin } from '../utils/securityPin';
+import { ShieldAlert, KeyRound, Eye, EyeOff, Trash2, X, AlertTriangle } from 'lucide-react';
+import { validateDailyPin } from '../utils/securityPin';
 
 export interface SecurityPinModalProps {
   isOpen: boolean;
@@ -26,16 +26,11 @@ export const SecurityPinModal: React.FC<SecurityPinModalProps> = ({
   const [pinInput, setPinInput] = useState('');
   const [showPin, setShowPin] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [showHint, setShowHint] = useState(false);
-
-  const todayPin = getTodayPin();
-  const dateParts = getTodayPinParts();
 
   useEffect(() => {
     if (isOpen) {
       setPinInput('');
       setErrorMessage(null);
-      setShowHint(false);
     }
   }, [isOpen]);
 
@@ -52,7 +47,7 @@ export const SecurityPinModal: React.FC<SecurityPinModalProps> = ({
 
     const isValid = validateDailyPin(pinInput);
     if (!isValid) {
-      setErrorMessage(`PIN salah! Format PIN hari ini harus: DDMMYY-pbj (Contoh: ${todayPin})`);
+      setErrorMessage('PIN keamanan salah! Akses ditolak.');
       return;
     }
 
@@ -108,40 +103,7 @@ export const SecurityPinModal: React.FC<SecurityPinModalProps> = ({
             </div>
           )}
 
-          {/* Rule Card */}
-          <div className="p-3 bg-rose-50/60 border border-rose-200/70 rounded-xl space-y-1.5 text-xs text-rose-950">
-            <div className="flex items-center justify-between">
-              <span className="font-extrabold flex items-center gap-1 text-[11px] text-[#701524]">
-                <KeyRound className="w-3.5 h-3.5" />
-                <span>Aturan PIN Keamanan Harian:</span>
-              </span>
-              <button
-                type="button"
-                onClick={() => setShowHint(!showHint)}
-                className="text-[10px] text-[#701524] underline hover:text-[#58101c] font-bold cursor-pointer"
-              >
-                {showHint ? 'Tutup Petunjuk' : 'Lihat Format Hari Ini'}
-              </button>
-            </div>
-            <p className="text-[11px] text-stone-600 leading-relaxed">
-              Kombinasi <strong className="text-stone-800">Tanggal + Bulan + 2 angka akhir Tahun</strong> ditambah akhiran <strong className="text-rose-700 font-mono">-pbj</strong>.
-            </p>
 
-            {showHint && (
-              <div className="mt-2 pt-2 border-t border-rose-200/80 space-y-1 bg-white p-2.5 rounded-lg border">
-                <div className="flex items-center gap-1.5 text-[11px] text-stone-600">
-                  <Calendar className="w-3.5 h-3.5 text-rose-700 shrink-0" />
-                  <span>Tanggal saat ini: <strong>{dateParts.formattedDate}</strong></span>
-                </div>
-                <div className="flex items-center justify-between text-xs pt-1">
-                  <span className="text-stone-500 text-[10px]">PIN Resmi Hari Ini:</span>
-                  <code className="px-2 py-0.5 bg-rose-100 text-rose-900 font-mono font-bold rounded text-xs select-all">
-                    {todayPin}
-                  </code>
-                </div>
-              </div>
-            )}
-          </div>
 
           {/* PIN Input */}
           <div className="space-y-1.5">
@@ -160,7 +122,7 @@ export const SecurityPinModal: React.FC<SecurityPinModalProps> = ({
                   setPinInput(e.target.value);
                   if (errorMessage) setErrorMessage(null);
                 }}
-                placeholder={`Misal: ${todayPin}`}
+                placeholder="Masukkan PIN keamanan..."
                 className={`w-full pl-9 pr-10 py-2.5 text-xs font-mono border rounded-xl focus:outline-none focus:ring-2 bg-white text-stone-900 transition-all ${
                   errorMessage
                     ? 'border-rose-500 focus:ring-rose-500 bg-rose-50/30'

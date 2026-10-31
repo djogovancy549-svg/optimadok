@@ -26,6 +26,8 @@ interface ManagePackagesProps {
   onSelectPackage: (pkg: ProcurementPackage) => void;
   onOpenStageTracker: (pkg: ProcurementPackage) => void;
   onOpenReviewForPackage: (pkg: ProcurementPackage) => void;
+  onEditPackage: (pkg: ProcurementPackage) => void;
+  onDeletePackage: (pkgId: string) => void;
 }
 
 export const ManagePackages: React.FC<ManagePackagesProps> = ({
@@ -34,6 +36,8 @@ export const ManagePackages: React.FC<ManagePackagesProps> = ({
   onSelectPackage,
   onOpenStageTracker,
   onOpenReviewForPackage,
+  onEditPackage,
+  onDeletePackage,
 }) => {
   // Search & Filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -507,6 +511,22 @@ export const ManagePackages: React.FC<ManagePackagesProps> = ({
                               className="p-1.5 text-stone-600 hover:text-[#701524] hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                             >
                               <FileCheck2 className="w-4 h-4" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => onEditPackage(pkg)}
+                              title="Edit Paket"
+                              className="p-1.5 text-stone-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => onDeletePackage(pkg.id)}
+                              title="Hapus Paket"
+                              className="p-1.5 text-stone-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                             </button>
                           </div>
                         </td>
