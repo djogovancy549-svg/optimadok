@@ -265,6 +265,16 @@ export const ActivityDocumentationView: React.FC<ActivityDocumentationViewProps>
     if (onShowToast) onShowToast('Foto baru berhasil ditambahkan ke dokumentasi kegiatan!', 'success');
   };
 
+  // Permanent photo deletion from uploaded list
+  const handleDeletePermanentPhoto = (photoId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLocalPhotoDocs((prev) => prev.filter((p) => p.id !== photoId));
+    const nextSelected = selectedPhotoIds.filter((id) => id !== photoId);
+    setSelectedPhotoIds(nextSelected);
+    updateCurrentActivity({ selectedPhotoIds: nextSelected });
+    if (onShowToast) onShowToast('Foto berhasil dihapus dari daftar unggahan.', 'success');
+  };
+
   const selectedPhotos = localPhotoDocs.filter((p) => selectedPhotoIds.includes(p.id));
 
   return (
@@ -510,13 +520,19 @@ export const ActivityDocumentationView: React.FC<ActivityDocumentationViewProps>
                       </div>
 
                       <div className="flex-1 space-y-1">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-1">
                           <span className="text-[10px] font-mono font-bold text-emerald-800">
                             Foto #{idx + 1}
                           </span>
-                          <span className="text-[9px] text-stone-400 font-mono">
-                            {photo.fileSize}
-                          </span>
+                          <button
+                            type="button"
+                            onClick={() => togglePhotoSelection(photo.id)}
+                            className="px-2 py-0.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded text-[10px] font-bold flex items-center gap-1 cursor-pointer transition-colors border border-rose-200"
+                            title="Keluarkan foto ini dari lembar (matikan centang)"
+                          >
+                            <X className="w-3 h-3" />
+                            <span>Matikan Centang</span>
+                          </button>
                         </div>
                         
                         <input
@@ -585,10 +601,19 @@ export const ActivityDocumentationView: React.FC<ActivityDocumentationViewProps>
                         />
 
                         {isSelected && (
-                          <div className="absolute top-2 right-2 bg-emerald-600 text-white rounded-full p-0.5 shadow-md">
+                          <div className="absolute top-2 right-2 bg-emerald-600 text-white rounded-full p-0.5 shadow-md z-10">
                             <CheckCircle2 className="w-4 h-4" />
                           </div>
                         )}
+
+                        <button
+                          type="button"
+                          onClick={(e) => handleDeletePermanentPhoto(photo.id, e)}
+                          className="absolute top-2 left-2 bg-rose-600 hover:bg-rose-700 text-white p-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-20 shadow-md cursor-pointer"
+                          title="Hapus foto ini secara permanen dari daftar unggahan"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
 
                         <div className="absolute bottom-0 left-0 right-0 p-1.5 bg-black/75 text-[9px] text-white font-semibold truncate leading-tight">
                           {titleText}
@@ -669,7 +694,18 @@ export const ActivityDocumentationView: React.FC<ActivityDocumentationViewProps>
                     {selectedPhotos.map((photo, idx) => {
                       const displayTitle = getDisplayTitle(photo);
                       return (
-                        <div key={photo.id} className="border-[2.5px] border-stone-900 p-1.5 bg-white shadow-2xs">
+                        <div key={photo.id} className="border-[2.5px] border-stone-900 p-1.5 bg-white shadow-2xs relative group">
+                          {/* Direct remove button overlay on A4 preview frame */}
+                          <button
+                            type="button"
+                            onClick={() => togglePhotoSelection(photo.id)}
+                            className="absolute top-2 right-2 bg-rose-700 hover:bg-rose-800 text-white px-2 py-1 rounded-lg shadow-md z-20 opacity-0 group-hover:opacity-100 transition-all print:hidden cursor-pointer flex items-center gap-1 text-[10px] font-bold border border-rose-900"
+                            title="Keluarkan / hapus foto ini dari lembar A4 (Matikan centang)"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                            <span>Keluarkan dari Lembar</span>
+                          </button>
+
                           <div className="aspect-[4/3] relative overflow-hidden bg-stone-100 border border-stone-300">
                             <img
                               src={getPhotoDisplayUrl(photo)}
