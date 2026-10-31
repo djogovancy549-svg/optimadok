@@ -54,7 +54,10 @@ export const AttendanceListView: React.FC<AttendanceListViewProps> = ({
     { id: '5', name: '', from: '', signature: null },
   ]);
 
-  const [customLogo, setCustomLogo] = useState<string | null>(() => localStorage.getItem('sipelang_official_logo'));
+  const [customLogo] = useState<string | null>(() => localStorage.getItem('sipelang_official_logo'));
+  const [selectedDinas, setSelectedDinas] = useState(procurementPackage.skpdName);
+  
+  const skpdList = (localStorage.getItem('sipelang_skpd_list') || 'Dinas Pekerjaan Umum dan Penataan Ruang (PUPR) Kab. Nagekeo\nSekretariat Daerah Kab. Nagekeo\nBadan Perencanaan Pembangunan, Penelitian dan Pengembangan Daerah').split('\n');
 
   const handleAddEntry = () => {
     setEntries([...entries, { id: Date.now().toString(), name: '', from: '', signature: null }]);
@@ -125,6 +128,12 @@ export const AttendanceListView: React.FC<AttendanceListViewProps> = ({
               <p className="text-[10px] text-stone-400 italic">Lengkapi informasi kegiatan dan daftar hadir untuk dicantumkan dalam dokumen resmi.</p>
               
               <div className="space-y-3">
+                <div>
+                  <label className="text-[10px] font-bold text-stone-400 uppercase">Nama Dinas/SKPD</label>
+                  <select value={selectedDinas} onChange={e => setSelectedDinas(e.target.value)} className="w-full px-3 py-2 text-xs border border-stone-200 rounded-xl bg-white">
+                    {skpdList.map(skpd => <option key={skpd} value={skpd}>{skpd}</option>)}
+                  </select>
+                </div>
                 <div>
                   <label className="text-[10px] font-bold text-stone-400 uppercase">Nama Kegiatan</label>
                   <input type="text" value={kegiatan} onChange={e => setKegiatan(e.target.value)} className="w-full px-3 py-2 text-xs border border-stone-200 rounded-xl" />
@@ -202,7 +211,7 @@ export const AttendanceListView: React.FC<AttendanceListViewProps> = ({
                </div>
                <div className="text-center flex-1 pr-10">
                   <h1 className="text-xs font-bold uppercase tracking-wider text-stone-950">PEMERINTAH KABUPATEN NAGEKEO</h1>
-                  <h2 className="text-base font-extrabold uppercase tracking-wide mt-0.5 text-stone-950">{procurementPackage.skpdName}</h2>
+                  <h2 className="text-base font-extrabold uppercase tracking-wide mt-0.5 text-stone-950">{selectedDinas}</h2>
                   <p className="text-[10px] text-stone-600 font-medium tracking-tight italic">Kompleks Bendungan Sutami - Mbay</p>
                   <p className="text-xs font-extrabold tracking-[0.25em] mt-1 text-stone-950">M B A Y</p>
                </div>

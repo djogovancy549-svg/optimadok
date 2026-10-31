@@ -766,6 +766,44 @@ function getFolderIdFromUrl(url) {
               </div>
             </div>
 
+            {/* Logo & Dinas Configuration */}
+            <div className="p-3.5 bg-stone-50 rounded-2xl border border-stone-200 space-y-3">
+              <h3 className="text-xs font-black text-stone-800 uppercase tracking-wider">Pengaturan Kop Surat (Logo & Dinas)</h3>
+              
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Logo Resmi Instansi:</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (ev) => {
+                        const dataUrl = ev.target?.result as string;
+                        localStorage.setItem('sipelang_official_logo', dataUrl);
+                        onShowToast('Logo berhasil diperbarui!', 'success');
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="w-full text-xs text-stone-500 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-stone-200 file:text-stone-700 hover:file:bg-stone-300"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Daftar SKPD/Dinas (Pilih Salah Satu):</label>
+                <textarea
+                  rows={3}
+                  value={localStorage.getItem('sipelang_skpd_list') || 'Dinas Pekerjaan Umum dan Penataan Ruang (PUPR) Kab. Nagekeo\nSekretariat Daerah Kab. Nagekeo\nBadan Perencanaan Pembangunan, Penelitian dan Pengembangan Daerah'}
+                  onChange={(e) => localStorage.setItem('sipelang_skpd_list', e.target.value)}
+                  className="w-full px-3 py-2 text-xs border border-stone-300 rounded-xl font-medium focus:ring-1 focus:ring-emerald-500 bg-white"
+                  placeholder="Masukkan nama dinas per baris..."
+                />
+              </div>
+            </div>
+
+
             {/* Drive Folder URLs Configuration */}
             <div className="space-y-3">
               <div>
